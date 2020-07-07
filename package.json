@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/cassiobock/bank-ish/issues"
   },
-  "homepage": "https://github.com/cassiobock/bank-ish#readme"
+  "homepage": "https://github.com/cassiobock/bank-ish#readme",
+  "devDependencies": {
+    "typescript": "^3.9.6"
+  }
 }
