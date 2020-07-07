@@ -1,0 +1,19 @@
+{
+  "name": "bank-ish",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cassiobock/bank-ish.git"
+  },
+  "author": "Cassio Bock <cassio@bock.com.br>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/cassiobock/bank-ish/issues"
+  },
+  "homepage": "https://github.com/cassiobock/bank-ish#readme"
+}
