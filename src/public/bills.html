@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <title>Bank-ish - Faturas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Bank-ish</h1>
+    <div id="content">
+      <h2>Carregando faturas...</h2>
+    </div>
+  </div>
+
+  <script>
+    function handleDetails(details) {
+      return `
+      <h3>Olá, ${details.name}</h3>
+      <p>
+        Próximas faturas: ${details.values.future} <br/>
+        Limite disponível: ${details.values.available}
+      </p>
+      `
+    }
+
+    function handleBill(bill) {
+      return `
+        <h5 style="margin-bottom: 0;">Fatura de <b>${bill.dueDate}</b></h5>
+        <h6>no valor de ${bill.amountDue}</h6>
+        <table class="u-full-width">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bill.charges.map(charge => `
+              <tr>
+                <td>${charge.date}</td>
+                <td>${charge.description}</td>
+                <td>R$ ${charge.amount}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `
+    }
+
+    function handleBankInfo(bankInfo) {
+      document.querySelector('#content h2').remove()
+
+      document.querySelector('#content').insertAdjacentHTML('beforeend', `
+      <div class="row">
+        ${handleDetails(bankInfo)}
+      </div>
+      <div class="row">
+        ${handleBill(bankInfo.bills.open)}
+      </div>
+      `)
+    }
+
+    fetch('/bills', { credentials: 'include' })
+      .then(res => {
+        if (res.status === 401) {
+          return window.location.href = '/'
+        }
+
+        return res.json().then(handleBankInfo)
+      })
+  </script>
+</body>
+
+</html>
