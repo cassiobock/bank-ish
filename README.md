@@ -56,8 +56,10 @@ Configuração do Puppeteer no Docker: [Running Puppeteer in Docker](https://git
 
 ### Melhorias
 Alguns pontos poderiam ser melhorados:
+- logs melhores
+- testes unitários
 - usar a API não oficial do Nubank: https://mobile.twitter.com/nubank/status/766665014161932288
-- melhorias na estabilidade da sessão aberta no Nubank
+- melhorias na estabilidade da sessão e expiração 
 - possibilidade de selecionar as faturas anteriores (os dados já existem, apenas não estão sendo exibidos na página)
 - não utilizar a `MemoryStore`, que é a session store padrão do `express-session`
 - adicionar linter
