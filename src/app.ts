@@ -2,6 +2,8 @@ import path from 'path'
 import express from 'express'
 import session from 'express-session'
 
+import * as nubank from './connector/nubank/index'
+
 const app = express()
 
 app.set('port', process.env.PORT || 3000)
@@ -17,5 +19,23 @@ app.use(session({
     maxAge: 3600000 // 1 hour
   }
 }))
+
+app.post('/login', async (req, res, next) => {
+  const { username, password } = req.body
+
+  try {
+    const bankInfoId = await nubank.login(
+      req.session.id,
+      username,
+      password
+    )
+
+    req.session.bankInfoId = bankInfoId
+
+    return res.redirect('/validation.html')
+  } catch (e) {
+    return next(e)
+  }
+})
 
 export default app
