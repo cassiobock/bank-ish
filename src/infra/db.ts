@@ -12,10 +12,7 @@ export async function connect() {
 
     await mongoose.connect(`mongodb://${DB_HOST}/bankish`, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-      user: 'root',
-      pass: 'pk4*YEoqtEcDBe68XapG',
-      authSource: 'admin'
+      useUnifiedTopology: true
     })
 
     mongoose.set('useFindAndModify', false)
