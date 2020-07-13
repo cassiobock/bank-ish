@@ -30,7 +30,32 @@ export async function getClient(sessionId: string, newSession = false) {
     return await waitForSelectorAndGetAttribute('div.qr-code img', 'src')
   }
 
+  async function isLogged() {
+    const url = await page.evaluate(() => window.location.href)
+    return url !== LOGIN_URL
+  }
+
+  async function getQRCode() {
+    const reloadElement = await page.$('div.qr-field .reload')
+
+    const isVisible = await reloadElement.evaluate((el: HTMLDivElement) => {
+      return el.style.display !== 'none'
+    }, reloadElement)
+
+    if (isVisible) {
+      await reloadElement.click()
+    }
+
+    const qrCodeElement = (await page.$('div.qr-code img')) as puppeteer.ElementHandle<HTMLImageElement>
+
+    return qrCodeElement.evaluate(
+      (e) => e.getAttribute('src'),
+    )
+  }
+
   return {
     authenticate,
+    getQRCode,
+    isLogged,
   }
 }

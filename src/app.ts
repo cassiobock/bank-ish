@@ -38,4 +38,37 @@ app.post('/login', async (req, res, next) => {
   }
 })
 
+app.get('/qrcode', async (req, res, next) => {
+  if (!req.session.bankInfoId) {
+    return res.status(401).send()
+  }
+
+  try {
+    const isLogged = await nubank.isLogged(
+      req.session.id,
+      req.session.bankInfoId
+    )
+
+    if (isLogged) {
+      return res
+        .status(200)
+        .json({
+          isLogged,
+          qrCode: null
+        })
+    }
+
+    const qrCode = await nubank.getQRCode(req.session.id)
+
+    return res
+      .status(200)
+      .json({ isLogged, qrCode })
+  } catch (e) {
+    if ((e as Error).message === 'missing session') {
+      return res.status(401).send()
+    }
+
+    return next(e)
+  }
+})
 export default app

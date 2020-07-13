@@ -9,3 +9,24 @@ export async function login(sessionId: string, username: string, password: strin
 
   return _id
 }
+
+export async function isLogged(sessionId: string, bankInfoId: string) {
+  const scraper = await nubank.getClient(sessionId)
+
+  const isLogged = await scraper.isLogged()
+
+  if (!isLogged) {
+    return isLogged
+  }
+
+  await BankInfo.findByIdAndUpdate(bankInfoId, {
+    isLogged
+  })
+
+  return isLogged
+}
+
+export async function getQRCode(sessionId: string) {
+  const scraper = await nubank.getClient(sessionId)
+  return scraper.getQRCode()
+}
