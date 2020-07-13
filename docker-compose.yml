@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    environment:
+      PORT: 3000
+      SESSION_SECRET: mGf8kZuuv9@4ggVDnMe6
+      DB_HOST: db
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    cap_add:
+      - SYS_ADMIN
+  db:
+    image: mongo:4.2.8-bionic

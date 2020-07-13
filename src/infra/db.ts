@@ -1,4 +1,6 @@
-import mongoose, { mongo } from 'mongoose'
+import mongoose from 'mongoose'
+
+const DB_HOST = process.env.DB_HOST
 
 export async function connect() {
   try {
@@ -8,7 +10,7 @@ export async function connect() {
       db.once('open', () => resolve())
     })
 
-    await mongoose.connect('mongodb://localhost/bankish', {
+    await mongoose.connect(`mongodb://${DB_HOST}/bankish`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       user: 'root',
