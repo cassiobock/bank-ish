@@ -6,9 +6,8 @@
   "scripts": {
     "build": "webpack --mode='production'",
     "build:dev": "webpack --watch",
-    "dev": "nodemon --inspect dist/app.js",
-    "start": "node dist/app.js",
-    "ts:watch": "tsc -w"
+    "dev": "NODE_ENV=development nodemon --inspect dist/app.js",
+    "start": "node dist/app.js"
   },
   "repository": {
     "type": "git",
