@@ -71,4 +71,28 @@ app.get('/qrcode', async (req, res, next) => {
     return next(e)
   }
 })
+
+app.get('/bills', async (req, res, next) => {
+  if (!req.session.bankInfoId) {
+    return res.status(401).send()
+  }
+
+  try {
+    const bankInfo = await nubank.getBills(
+      req.session.id,
+      req.session.bankInfoId
+    )
+
+    return res
+      .status(200)
+      .json(bankInfo)
+  } catch (e) {
+    if ((e as Error).message === 'missing session') {
+      return res.status(401).send()
+    }
+
+    return next(e)
+  }
+})
+
 export default app
