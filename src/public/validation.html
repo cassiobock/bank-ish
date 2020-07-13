@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <title>Bank-ish - QR Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1 style="margin-top: 2rem;">Bank-ish</h1>
+    <h3>Verificação em duas etapas</h3>
+    <div class="row">
+      <div class="six offset-by-three columns">
+        <h4 id="loading-msg">Carregando QR Code...</h4>
+        <img id="qrcode" />
+      </div>
+    </div>
+    <div class="row">
+      <p>
+        Para acessar sua conta no Nubank é necessário validar o QR Code:
+        <ol>
+          <li>Abra o app do Nubank;</li>
+          <li>Selecione Perfil e em seguida selecione Acesso pelo site;</li>
+          <li>Aponte o celular para a tela do computador para capturar o QR code.</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function setQRCode(newSrc) {
+      const qrCode = document.querySelector('#qrcode')
+      const loadingElement = document.querySelector('#loading-msg')
+
+      if (loadingElement) {
+        loadingElement.remove()
+      }
+
+      if (newSrc !== qrCode.getAttribute('src')) {
+        qrCode.setAttribute('src', newSrc)
+      }
+    }
+
+    function handleQRCode({ isLogged, qrCode }) {
+      if (isLogged) {
+        return window.location.href = '/bills.html'
+      }
+
+      if (qrCode) {
+        setQRCode(qrCode)
+      }
+
+      fetchQRCode()
+    }
+
+    function fetchQRCode() {
+      setTimeout(() => {
+        fetch('/qrcode', { credentials: "include" })
+          .then(res => {
+            if (res.status === 401) {
+              return window.location.href = '/'
+            }
+
+            return res.json().then(handleQRCode)
+          })
+      }, 3000)
+    }
+
+    fetchQRCode()
+  </script>
+</body>
+
+</html>
